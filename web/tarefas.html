@@ -1,39 +1,79 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
-  <title>Tarefas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Check</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<nav>
-  <h2>Daily Check</h2>
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="temperatura.html">Temperatura</a></li>
-    <li><a href="tarefas.html">Tarefas</a></li>
-  </ul>
-</nav>
+  <nav class="navbar">
 
-<h1>Cadastro de Tarefas</h1>
+    <h2 class="logo">Daily Check</h2>
 
-<div class="form">
-  <input type="text" id="nome" placeholder="Nome da tarefa">
-  <input type="date" id="inicio">
-  <input type="date" id="fim">
-  <button onclick="abrirModal()">Adicionar</button>
-</div>
+    <ul class="menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="temperatura.html">Temperatura</a></li>
+      <li><a href="tarefas.html">Tarefas</a></li>
+    </ul>
 
-<!-- Modal -->
-<div id="modal" class="modal">
-  <div class="modal-content">
-    <h2>Descricao</h2>
-    <textarea id="descricao"></textarea>
-    <button onclick="salvarTarefa()">Salvar</button>
+  </nav>
+
+  <section class="topo">
+
+    <h1>Cadastro de Tarefas</h1>
+
+  </section>
+
+  <section class="form-container">
+
+    <div class="form">
+
+      <input type="text" id="titulo" placeholder="Nome da tarefa">
+
+      <input type="date" id="datainicio">
+
+      <input type="date" id="datafinal">
+
+      <input type="text" id="imgurl" placeholder="URL da imagem">
+
+      <button onclick="abrirModal()">
+        Adicionar Tarefa
+      </button>
+
+    </div>
+
+  </section>
+
+  <div id="modal" class="modal">
+
+    <div class="modal-content">
+
+      <h2>Descrição da tarefa</h2>
+
+      <textarea id="descricao" placeholder="Digite a descrição da tarefa"></textarea>
+
+      <div class="botoes-modal">
+
+        <button onclick="salvarTarefa()">
+          Salvar
+        </button>
+
+        <button onclick="fecharModal()">
+          Fechar
+        </button>
+
+      </div>
+
+    </div>
+
   </div>
-</div>
 
-<script src="script.js"></script>
+  <script src="script.js"></script>
+
 </body>
+
 </html>

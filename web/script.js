@@ -1,14 +1,7 @@
 const API = "http://localhost:3000/tarefas";
 
-function trocarPagina(pagina) {
-  document.querySelectorAll("section").forEach(sec => {
-    sec.classList.remove("ativo");
-  });
-  document.getElementById(pagina).classList.add("ativo");
-}
-
 function abrirModal() {
-  document.getElementById("modal").style.display = "block";
+  document.getElementById("modal").style.display = "flex";
 }
 
 function fecharModal() {
@@ -16,6 +9,7 @@ function fecharModal() {
 }
 
 async function salvarTarefa() {
+
   const titulo = document.getElementById("titulo").value;
   const descricao = document.getElementById("descricao").value;
   const datainicio = document.getElementById("datainicio").value;
@@ -23,106 +17,122 @@ async function salvarTarefa() {
   const imgurl = document.getElementById("imgurl").value;
 
   if (!titulo || !descricao) {
-    alert("Preencha os campos obrigatorios");
+    alert("Preencha os campos obrigatórios");
     return;
   }
 
-  await fetch(`${API}/cadastrar`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      titulo,
-      descricao,
-      datainicio,
-      datafinal,
-      imgurl
-    })
-  });
+  const tarefa = {
+    titulo,
+    descricao,
+    datainicio,
+    datafinal,
+    imgurl
+  };
 
-  limparCampos();
-  fecharModal();
-  carregarTarefas();
-}
-
-async function carregarTarefas() {
-  const res = await fetch(`${API}/listar`);
-  const tarefas = await res.json();
-
-  const container = document.getElementById("cards");
-  if (!container) return;
-
-  container.innerHTML = "";
-
-  tarefas.forEach(t => {
-    container.innerHTML += `
-      <div class="card">
-        <img src="${t.imgurl || 'https://picsum.photos/200'}">
-
-        <h3>${t.titulo}</h3>
-        <p>${t.descricao}</p>
-
-        <small>
-          ${formatarData(t.datainicio)} → ${formatarData(t.datafinal)}
-        </small>
-
-        <br><br>
-
-        <button onclick="deletar(${t.id})">Excluir</button>
-      </div>
-    `;
-  });
-}
-
-async function deletar(id) {
-  await fetch(`${API}/excluir/${id}`, {
-    method: "DELETE"
-  });
-
-  carregarTarefas();
-}
-
-const key = "SUA_API_KEY";
-
-async function buscarCidade(cidade) {
   try {
-    const res = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${cidade}&appid=${key}&lang=pt_br&units=metric`
-    );
 
-    const dados = await res.json();
+    const response = await fetch(`${API}/cadastrar`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(tarefa)
+    });
 
-    if (dados.cod != 200) {
-      alert("Cidade não encontrada!");
-      return;
+    if (!response.ok) {
+      throw new Error("Erro ao cadastrar");
     }
 
-    mostrarTemperatura(dados);
+    alert("Tarefa cadastrada!");
 
-  } catch (e) {
-    alert("Erro ao buscar clima");
+    limparCampos();
+
+    fecharModal();
+
+    carregarTarefas();
+
+  } catch (erro) {
+
+    console.error(erro);
+
+    alert("Erro ao salvar tarefa");
   }
 }
 
-function mostrarTemperatura(dados) {
-  document.querySelector(".cidade").innerHTML = "Tempo em " + dados.name;
-  document.querySelector(".temp").innerHTML = Math.floor(dados.main.temp) + "°C";
-  document.querySelector(".texto-previsao").innerHTML = dados.weather[0].description;
-  document.querySelector(".umidade").innerHTML = "Umidade: " + dados.main.humidity + "%";
-  document.querySelector(".img-previsao").src =
-    `https://openweathermap.org/img/wn/${dados.weather[0].icon}.png`;
+async function carregarTarefas() {
+
+  try {
+
+    const response = await fetch(`${API}/listar`);
+
+    const tarefas = await response.json();
+
+    const container = document.getElementById("cards");
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    tarefas.forEach((tarefa) => {
+
+      container.innerHTML += `
+      
+        <div class="card">
+
+          <img 
+            src="${tarefa.imgurl || 'https://picsum.photos/300'}"
+            alt="imagem"
+          >
+
+          <h2>${tarefa.titulo}</h2>
+
+          <p>${tarefa.descricao}</p>
+
+          <small>
+            ${formatarData(tarefa.datainicio)}
+            até
+            ${formatarData(tarefa.datafinal)}
+          </small>
+
+          <br><br>
+
+          <button onclick="deletarTarefa(${tarefa.id})">
+            Excluir
+          </button>
+
+        </div>
+
+      `;
+    });
+
+  } catch (erro) {
+
+    console.error(erro);
+
+    alert("Erro ao carregar tarefas");
+  }
 }
 
-function buscarTemp() {
-  const cidade = document.querySelector(".input-cidade").value.trim();
+async function deletarTarefa(id) {
 
-  if (!cidade) return alert("Digite uma cidade");
+  try {
 
-  buscarCidade(cidade);
+    await fetch(`${API}/excluir/${id}`, {
+      method: "DELETE"
+    });
+
+    carregarTarefas();
+
+  } catch (erro) {
+
+    console.error(erro);
+
+    alert("Erro ao deletar tarefa");
+  }
 }
 
 function limparCampos() {
+
   document.getElementById("titulo").value = "";
   document.getElementById("descricao").value = "";
   document.getElementById("datainicio").value = "";
@@ -131,7 +141,70 @@ function limparCampos() {
 }
 
 function formatarData(data) {
+
+  if (!data) return "";
+
   return new Date(data).toLocaleDateString("pt-BR");
+}
+
+const key = "SUA_API_KEY";
+
+async function buscarCidade(cidade) {
+
+  try {
+
+    const response = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${cidade}&appid=${key}&lang=pt_br&units=metric`
+    );
+
+    const dados = await response.json();
+
+    if (dados.cod != 200) {
+      alert("Cidade não encontrada");
+      return;
+    }
+
+    mostrarTemperatura(dados);
+
+  } catch (erro) {
+
+    console.error(erro);
+
+    alert("Erro ao buscar clima");
+  }
+}
+
+function mostrarTemperatura(dados) {
+
+  document.querySelector(".cidade").innerHTML =
+    "Tempo em " + dados.name;
+
+  document.querySelector(".temp").innerHTML =
+    Math.floor(dados.main.temp) + "°C";
+
+  document.querySelector(".texto-previsao").innerHTML =
+    dados.weather[0].description;
+
+  document.querySelector(".umidade").innerHTML =
+    "Umidade: " + dados.main.humidity + "%";
+
+  document.querySelector(".img-previsao").src =
+    `https://openweathermap.org/img/wn/${dados.weather[0].icon}.png`;
+}
+
+function buscarTemp() {
+
+  const cidade = document
+    .querySelector(".input-cidade")
+    .value
+    .trim();
+
+  if (!cidade) {
+    alert("Digite uma cidade");
+    return;
+  }
+
+  buscarCidade(cidade);
 }
 
 carregarTarefas();
