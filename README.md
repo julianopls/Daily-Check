@@ -1,4 +1,6 @@
+<p alingn="center">
 # Daily Check
+</p>
 
 
 <p align="center">
