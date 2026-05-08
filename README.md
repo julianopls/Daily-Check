@@ -1,8 +1,5 @@
-# 🚀 Daily Check
+# Daily Check
 
-<p align="center">
-  <img src="./assets/logo.png" width="180" alt="Daily Check Logo">
-</p>
 
 <p align="center">
   Sistema web para gerenciamento de tarefas diárias desenvolvido com foco em organização, produtividade e praticidade.
@@ -42,8 +39,8 @@ O sistema realiza o consumo de uma API REST local para armazenamento e manipula�
 # 🛠️ Tecnologias Utilizadas
 
 ## Front-end
-- HTML5
-- CSS3
+- HTML
+- CSS
 - JavaScript
 
 ## Back-end
@@ -54,23 +51,9 @@ O sistema realiza o consumo de uma API REST local para armazenamento e manipula�
 - Git
 - GitHub
 - VS Code
+- Git Bash
 
 ---
-
-# 📂 Estrutura do Projeto
-
-```bash
-Daily-Check/
-│
-├── assets/
-├── index.html
-├── style.css
-├── script.js
-├── server.js
-├── db.json
-├── package.json
-└── README.md
-```
 
 ---
 
@@ -125,27 +108,3 @@ http://localhost:3000/tarefas
 ```
 
 ---
-
-# 📸 Preview do Sistema
-
-Adicione imagens da aplicação na pasta `assets`.
-
-Exemplo:
-
-```md
-![Preview](./assets/preview.png)
-```
-
----
-
-# 👨‍💻 Desenvolvedor
-
-**Juliano Rafael**
-
----
-
-# 🔗 Repositório Oficial
-
-```bash
-https://github.com/julianopls/Daily-Check
-```
