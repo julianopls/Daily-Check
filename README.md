@@ -1,10 +1,10 @@
-#  Daily Check
+<div align="center">
 
+# 🚀 Daily Check
 
+Sistema web para gerenciamento de tarefas diárias desenvolvido com foco em organização, produtividade e praticidade.
 
-<p align="center">
-  Sistema web para gerenciamento de tarefas diárias desenvolvido com foco em organização, produtividade e praticidade.
-</p>
+</div>
 
 ---
 
